@@ -1,22 +1,23 @@
 version: "3"
 services:
   hub:
-    image: selenium/hub:3.14
+    image: selenium/hub:4.1.0
   chrome:
-    image: selenium/node-chrome:3.14      
+    image: selenium/node-chrome:4.1.0
+    shm_size: '2gb'
     depends_on:
       - hub
     environment:
       - HUB_HOST=hub
   firefox:
-    image: selenium/node-firefox:3.14
-    shm_size: '1gb'   
+    image: selenium/node-firefox:4.1.0
+    shm_size: '2gb'   
     depends_on:
       - hub
     environment:
       - HUB_HOST=hub
   search-module:
-    image: vinsdocker/selenium-docker
+    image: roronoazorroippo/selenium-docker
     depends_on:
       - chrome
       - firefox
@@ -25,9 +26,9 @@ services:
       - BROWSER=firefox
       - MODULE=search-module.xml
     volumes:
-      - ./output/search-result:/usr/share/udemy/test-output      
+      - E:\MAX\IT\UDEMY\Selenium_WebDriver_with_Docker_Jenkins_AWS\test-output:/usr/share/udemy/test-output      
   book-flight-module:
-    image: vinsdocker/selenium-docker
+    image: roronoazorroippo/selenium-docker
     depends_on:
       - chrome
       - firefox
@@ -36,4 +37,4 @@ services:
       - BROWSER=chrome
       - MODULE=book-flight-module.xml
     volumes:
-      - ./output/book-result:/usr/share/udemy/test-output   
+      - E:\MAX\IT\UDEMY\Selenium_WebDriver_with_Docker_Jenkins_AWS\test-output2:/usr/share/udemy/test-output   

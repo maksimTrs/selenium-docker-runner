@@ -2,20 +2,18 @@ version: "3"
 services:
   hub:
     image: selenium/hub:4.1.0
-    ports:
-      - "4444:4444"
   chrome:
     image: selenium/node-chrome:4.1.0
     depends_on:
       - hub
     environment:
-      - HUB_HOST=hub
+      - SE_EVENT_BUS_HOST=hub
   firefox:
     image: selenium/node-firefox:4.1.0
     depends_on:
       - hub
     environment:
-      - HUB_HOST=hub
+      - SE_EVENT_BUS_HOST=hub
   search-module:
     image: roronoazorroippo/selenium-docker
     depends_on:

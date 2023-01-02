@@ -5,7 +5,7 @@ pipeline{
 	//otherwise if you don't pull, docker will always use the local image it had pulled initially for all the tests
 		stage("Pull Latest Image"){
 			steps{
-				bat "docker pull roronoazorroippo/selenium-docker"
+				bat "docker pull ragazzoua/selenium-docker"
 			}
 		}
 	//Here we run the grid seperately
@@ -28,7 +28,9 @@ pipeline{
 	
 	post{
 		always{
+			archiveArtifacts artifacts: 'output/**' //archive everything under output folder
 			bat "docker-compose down" //we put the down command here so even if we kill the job the grid will be brought down successfully
+			
 		}
 	}
 }

@@ -2,39 +2,39 @@ version: "3"
 services:
   hub:
     image: selenium/hub:4.1.0
+    ports:
+      - "4444:4444"
   chrome:
     image: selenium/node-chrome:4.1.0
-    shm_size: '1gb' 
     depends_on:
       - hub
     environment:
       - HUB_HOST=hub
   firefox:
     image: selenium/node-firefox:4.1.0
-    shm_size: '1gb' 
     depends_on:
       - hub
     environment:
       - HUB_HOST=hub
-   search-module:
-    image: vinsdocker/selenium-docker
+  search-module:
+    image: ragazzoua/selenium-docker
     depends_on:
       - chrome
       - firefox
     environment:
-      - HUB_HOST=hub
       - BROWSER=firefox
+      - HUB_HOST=hub
       - MODULE=search-module.xml
     volumes:
-      - ./output/search-result:/usr/share/udemy/test-output      
+      - ./output/search-result:/usr/share/udemy/test-output
   book-flight-module:
-    image: vinsdocker/selenium-docker
+    image: ragazzoua/selenium-docker
     depends_on:
       - chrome
       - firefox
     environment:
-      - HUB_HOST=hub
       - BROWSER=chrome
+      - HUB_HOST=hub
       - MODULE=book-flight-module.xml
     volumes:
-      - ./output/book-result:/usr/share/udemy/test-output   
+      - ./output/book-result:/usr/share/udemy/test-output

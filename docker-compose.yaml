@@ -4,40 +4,37 @@ services:
     image: selenium/hub:4.1.0
   chrome:
     image: selenium/node-chrome:4.1.0
+    shm_size: '1gb' 
     depends_on:
       - hub
     environment:
       - HUB_HOST=hub
   firefox:
     image: selenium/node-firefox:4.1.0
+    shm_size: '1gb' 
     depends_on:
       - hub
     environment:
       - HUB_HOST=hub
-  search-module:
-    image: roronoazorroippo/selenium-docker
+   search-module:
+    image: vinsdocker/selenium-docker
     depends_on:
       - chrome
       - firefox
     environment:
-      - BROWSER=firefox
       - HUB_HOST=hub
+      - BROWSER=firefox
       - MODULE=search-module.xml
     volumes:
-      - ./output/search-result:/usr/share/udemy/test-output
+      - ./output/search-result:/usr/share/udemy/test-output      
   book-flight-module:
-    image: roronoazorroippo/selenium-docker
+    image: vinsdocker/selenium-docker
     depends_on:
       - chrome
       - firefox
     environment:
-      - BROWSER=chrome
       - HUB_HOST=hub
+      - BROWSER=chrome
       - MODULE=book-flight-module.xml
     volumes:
-      - ./output/book-result:/usr/share/udemy/test-output
-      
-      #/usr/share/udemy is the working directory we defined in the Dockerfile that we used to build the image. and we know that the 
-      #test-output folder is created automatically when the suite runs. and we are using a seperate directory on our host and mapping it to the same test-output folder
-
-      #we can keep on adding more modules if we want to test on different browsers
+      - ./output/book-result:/usr/share/udemy/test-output   

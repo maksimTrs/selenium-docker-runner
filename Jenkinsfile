@@ -4,7 +4,7 @@ pipeline{
 	//otherwise if you don't pull, docker will always use the local image it had pulled initially for all the tests
 		stage("Pull Latest Image"){
 			steps{
-				bat "docker pull affanr/selenium-docker"
+				bat "docker pull roronoazorroippo/selenium-docker"
 			}
 		}
 		//Here we run the grid seperately
@@ -18,7 +18,7 @@ pipeline{
 		//We then run the test images seperately 
 		stage("Run Test"){
 			steps{
-				bat "docker-compose up search-module"
+				bat "docker-compose up search-module book-flight-module"
 			}
 		}
 	}

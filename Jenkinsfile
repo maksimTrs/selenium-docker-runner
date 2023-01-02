@@ -28,9 +28,7 @@ pipeline{
 	
 	post{
 		always{
-			archiveArtifacts artifacts: 'output/**' //archive everything under output folder
 			bat "docker-compose down" //we put the down command here so even if we kill the job the grid will be brought down successfully
-			
 		}
 	}
 }

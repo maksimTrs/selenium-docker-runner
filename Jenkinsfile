@@ -5,7 +5,7 @@ pipeline{
 	//otherwise if you don't pull, docker will always use the local image it had pulled initially for all the tests
 		stage("Pull Latest Image"){
 			steps{
-				bat "docker pull ragazzoua/selenium-docker"
+				bat "docker pull roronoazorroippo/selenium-docker"
 			}
 		}
 	//Here we run the grid seperately

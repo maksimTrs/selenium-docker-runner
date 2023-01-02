@@ -1,45 +1,36 @@
-version: "3"
-services:
-  hub:
-    image: selenium/hub:3.14
-    ports:
-      - "4444:4444"
-  chrome:
-    image: selenium/node-chrome:3.14
-    depends_on:
-      - hub
-    environment:
-      - HUB_HOST=hub
-  firefox:
-    image: selenium/node-firefox:3.14
-    depends_on:
-      - hub
-    environment:
-      - HUB_HOST=hub
-  search-module:
-    image: ragazzoua/selenium-docker
-    depends_on:
-      - chrome
-      - firefox
-    environment:
-      - BROWSER=firefox
-      - HUB_HOST=hub
-      - MODULE=search-module.xml
-    volumes:
-      - ./output/search-result:/usr/share/udemy/test-output
-  book-flight-module:
-    image: ragazzoua/selenium-docker
-    depends_on:
-      - chrome
-      - firefox
-    environment:
-      - BROWSER=chrome
-      - HUB_HOST=hub
-      - MODULE=book-flight-module.xml
-    volumes:
-      - ./output/book-result:/usr/share/udemy/test-output
-      
-      #/usr/share/udemy is the working directory we defined in the Dockerfile that we used to build the image. and we know that the 
-      #test-output folder is created automatically when the suite runs. and we are using a seperate directory on our host and mapping it to the same test-output folder
-
-      #we can keep on adding more modules if we want to test on different browsers
+pipeline{
+	agent any
+	stages{
+	//here we are pulling the latest image from the repo
+	//otherwise if you don't pull, docker will always use the local image it had pulled initially for all the tests
+		stage("Pull Latest Image"){
+			steps{
+				bat "docker pull ragazzoua/selenium-docker"
+			}
+		}
+	//Here we run the grid seperately
+	//using the -d command we run it in the background
+	//And only select the Hub, Chrome, and Firefox images to run from the docker-compose file	
+		stage("Start Grid"){
+			steps{
+				bat "docker-compose up -d hub chrome firefox"
+			}
+		}
+	//We then run the test images seperately 
+		stage("Run Test"){
+			steps{
+				bat "docker-compose up search-module book-flight-module"
+			}
+		}
+	}
+	//This post command always runs even if we kill the job.
+	//Here we are saying to archive the test results in the slaves workspace directory
+	
+	post{
+		always{
+			archiveArtifacts artifacts: 'output/**' //archive everything under output folder
+			bat "docker-compose down" //we put the down command here so even if we kill the job the grid will be brought down successfully
+			
+		}
+	}
+}

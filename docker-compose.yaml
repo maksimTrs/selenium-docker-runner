@@ -1,25 +1,23 @@
 version: "3"
 services:
   hub:
-    image: selenium/hub:4.1.0
+    image: selenium/hub:3.14
     ports:
       - "4444:4444"
   chrome:
-    image: selenium/node-chrome:4.1.0
-    shm_size: '2gb'
+    image: selenium/node-chrome:3.14
     depends_on:
       - hub
     environment:
       - HUB_HOST=hub
   firefox:
-    image: selenium/node-firefox:4.1.0
-    shm_size: '2gb'   
+    image: selenium/node-firefox:3.14
     depends_on:
       - hub
     environment:
       - HUB_HOST=hub
-   search-module:
-    image: roronoazorroippo/selenium-docker
+  search-module:
+    image: ragazzoua/selenium-docker
     depends_on:
       - chrome
       - firefox
@@ -30,7 +28,7 @@ services:
     volumes:
       - ./output/search-result:/usr/share/udemy/test-output
   book-flight-module:
-    image: roronoazorroippo/selenium-docker
+    image: ragazzoua/selenium-docker
     depends_on:
       - chrome
       - firefox

@@ -17,7 +17,7 @@ services:
     environment:
       - HUB_HOST=hub
   search-module:
-    image: ragazzoua/selenium-docker
+    image: roronoazorroippo/selenium-docker
     depends_on:
       - chrome
       - firefox
@@ -28,7 +28,7 @@ services:
     volumes:
       - ./output/search-result:/usr/share/udemy/test-output
   book-flight-module:
-    image: ragazzoua/selenium-docker
+    image: roronoazorroippo/selenium-docker
     depends_on:
       - chrome
       - firefox

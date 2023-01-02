@@ -16,25 +16,30 @@ services:
       - hub
     environment:
       - HUB_HOST=hub
-  search-module:
-    image: roronoazorroippo/selenium-docker
+   search-module:
+    image: affanr/selenium-docker
     depends_on:
       - chrome
       - firefox
     environment:
-      - HUB_HOST=hub
       - BROWSER=firefox
+      - HUB_HOST=hub
       - MODULE=search-module.xml
     volumes:
-      - E:\MAX\IT\UDEMY\Selenium_WebDriver_with_Docker_Jenkins_AWS\test-output:/usr/share/udemy/test-output      
+      - ./output/search-result:/usr/share/udemy/test-output
   book-flight-module:
-    image: roronoazorroippo/selenium-docker
+    image: affanr/selenium-docker
     depends_on:
       - chrome
       - firefox
     environment:
-      - HUB_HOST=hub
       - BROWSER=chrome
+      - HUB_HOST=hub
       - MODULE=book-flight-module.xml
     volumes:
-      - E:\MAX\IT\UDEMY\Selenium_WebDriver_with_Docker_Jenkins_AWS\test-output2:/usr/share/udemy/test-output   
+      - ./output/book-result:/usr/share/udemy/test-output
+      
+      #/usr/share/udemy is the working directory we defined in the Dockerfile that we used to build the image. and we know that the 
+      #test-output folder is created automatically when the suite runs. and we are using a seperate directory on our host and mapping it to the same test-output folder
+
+      #we can keep on adding more modules if we want to test on different browsers

@@ -2,18 +2,30 @@ version: "3"
 services:
   hub:
     image: selenium/hub:4.1.0
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
   chrome:
     image: selenium/node-chrome:4.1.0
     depends_on:
       - hub
     environment:
       - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_INSTANCES=6
+      - SE_NODE_MAX_SESSIONS=6
   firefox:
     image: selenium/node-firefox:4.1.0
     depends_on:
       - hub
     environment:
       - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_INSTANCES=6
+      - SE_NODE_MAX_SESSIONS=6
   search-module:
     image: roronoazorroippo/selenium-docker
     depends_on:
